@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a2e;
+    color: #fff;
+    text-align: center;
+    padding: 50px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #16213e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #e94560;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #ff2e63;
+}
+
+
+
+input {
+    width: calc(100% - 20px); /* Віднімання padding, щоб не виходило за межі */
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; /* Гарантує, що padding не збільшує ширину */
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.remember-me input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
