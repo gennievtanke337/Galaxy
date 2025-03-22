@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let username = localStorage.getItem("username");
 
     if (!username) {
-        username = prompt("Введіть ваше ім'я користувача") || "Користувач";
+        username = prompt("Введіть ваше ім'я яке буде показуватись користувачам") || "Користувач";
         localStorage.setItem("username", username);
     }
 
@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
     savePasswordBtn.addEventListener("click", function () {
         const newPassword = document.getElementById("newPassword").value;
         if (newPassword.trim() !== "") {
-            alert("Пароль змінено успішно!");
+            alert("Пароль змінено успішно");
             passwordModal.classList.add("hidden");
         } else {
-            alert("Введіть новий пароль!");
+            alert("Введіть новий пароль");
         }
     });
 
