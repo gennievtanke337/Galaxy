@@ -4,8 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galaxy - Головна</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="dashboard.js" defer></script>
 </head>
 <body>
-    <h1>Тест</h1>
+    <header>
+        <h1>Galaxy</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Головна</a></li>
+                <li><a href="#" id="accountTab">Акаунт</a></li>
+                <li><button id="logoutBtn" class="btn logout">Вийти</button></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="homeSection">
+            <h2>Вітаємо у Galaxy!</h2>
+            <p>Це ваша панель керування.</p>
+        </section>
+
+        <section id="accountSection" class="hidden">
+            <h2>Мій акаунт</h2>
+            <p>Ім'я користувача: <span id="usernameDisplay"></span></p>
+            <button id="changePasswordBtn" class="btn">Змінити пароль</button>
+        </section>
+    </main>
+
+    <div id="passwordModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Зміна пароля</h2>
+            <input type="password" id="newPassword" placeholder="Новий пароль">
+            <div class="modal-buttons">
+                <button id="savePasswordBtn" class="btn">Зберегти</button>
+                <button id="closeModalBtn" class="btn">Закрити</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
