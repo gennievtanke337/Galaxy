@@ -3,44 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy - Головна</title>
+    <title>Galaxy - Панель</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="dashboard.js" defer></script>
 </head>
 <body>
     <header>
         <h1>Galaxy</h1>
         <nav>
             <ul>
-                <li><a href="#">Головна</a></li>
+                <li><a href="#" id="homeTab">Головна</a></li>
                 <li><a href="#" id="accountTab">Акаунт</a></li>
-                <li><button id="logoutBtn" class="btn logout">Вийти</button></li>
             </ul>
         </nav>
+        <button class="logout" id="logoutBtn">Вийти</button>
     </header>
-    
     <main>
         <section id="homeSection">
-            <h2>Вітаємо у Galaxy!</h2>
-            <p>Це ваша панель керування.</p>
+            <h2 id="welcomeText"></h2>
         </section>
-
         <section id="accountSection" class="hidden">
-            <h2>Мій акаунт</h2>
-            <p>Ім'я користувача: <span id="usernameDisplay"></span></p>
-            <button id="changePasswordBtn" class="btn">Змінити пароль</button>
+            <h2>Акаунт</h2>
+            <p>Ім'я: <span id="accountUsername"></span></p>
+            <button class="btn" id="changePasswordBtn">Змінити пароль</button>
         </section>
     </main>
 
     <div id="passwordModal" class="modal hidden">
         <div class="modal-content">
-            <h2>Зміна пароля</h2>
+            <h3>Зміна пароля</h3>
             <input type="password" id="newPassword" placeholder="Новий пароль">
             <div class="modal-buttons">
-                <button id="savePasswordBtn" class="btn">Зберегти</button>
-                <button id="closeModalBtn" class="btn">Закрити</button>
+                <button class="btn" id="savePasswordBtn">Зберегти</button>
+                <button class="btn" id="closeModalBtn">Скасувати</button>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let username = localStorage.getItem("username");
+
+            if (!username) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            document.getElementById("welcomeText").textContent = "Привіт, " + username + "!";
+            document.getElementById("accountUsername").textContent = username;
+
+            document.getElementById("homeTab").addEventListener("click", function () {
+                document.getElementById("homeSection").classList.remove("hidden");
+                document.getElementById("accountSection").classList.add("hidden");
+            });
+
+            document.getElementById("accountTab").addEventListener("click", function () {
+                document.getElementById("homeSection").classList.add("hidden");
+                document.getElementById("accountSection").classList.remove("hidden");
+            });
+
+            document.getElementById("logoutBtn").addEventListener("click", function () {
+                localStorage.removeItem("username");
+                window.location.href = "login.html";
+            });
+
+            document.getElementById("changePasswordBtn").addEventListener("click", function () {
+                document.getElementById("passwordModal").classList.remove("hidden");
+            });
+
+            document.getElementById("savePasswordBtn").addEventListener("click", function () {
+                let newPassword = document.getElementById("newPassword").value;
+                if (newPassword.trim() !== "") {
+                    alert("Пароль змінено успішно!");
+                    document.getElementById("passwordModal").classList.add("hidden");
+                } else {
+                    alert("Введіть новий пароль!");
+                }
+            });
+
+            document.getElementById("closeModalBtn").addEventListener("click", function () {
+                document.getElementById("passwordModal").classList.add("hidden");
+            });
+        });
+    </script>
 </body>
 </html>
