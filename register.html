@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Реєстрація</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Створення акаунта</h2>
+        <form id="registerForm">
+            <input type="text" id="newUsername" placeholder="Введіть логін" required>
+            <input type="password" id="newPassword" placeholder="Введіть пароль" required>
+            <button type="submit" class="btn">Зареєструватися</button>
+        </form>
+        <button class="btnuv" onclick="location.href='login.html'">Увійти</button>
+        <div class="social-buttons">
+            <div class="social-btn google">Увійти через Google</div>
+            <div class="social-btn twitter">Увійти через Twitter</div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            localStorage.setItem("username", document.getElementById("newUsername").value);
+            window.location.href = "dashboard.html";
+        });
+    </script>
+</body>
+</html>

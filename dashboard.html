@@ -1,8 +1,6 @@
-<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galaxy - Панель</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,75 +11,70 @@
             <ul>
                 <li><a href="#" id="homeTab">Головна</a></li>
                 <li><a href="#" id="accountTab">Акаунт</a></li>
+                <li><a href="#" id="updatesTab">Оновлення</a></li>
             </ul>
         </nav>
         <button class="logout" id="logoutBtn">Вийти</button>
     </header>
-    <main>
-        <section id="homeSection">
-            <h2 id="welcomeText"></h2>
-        </section>
-        <section id="accountSection" class="hidden">
-            <h2>Акаунт</h2>
-            <p>Ім'я: <span id="accountUsername"></span></p>
-            <button class="btn" id="changePasswordBtn">Змінити пароль</button>
-        </section>
-    </main>
-
-    <div id="passwordModal" class="modal hidden">
-        <div class="modal-content">
-            <h3>Зміна пароля</h3>
-            <input type="password" id="newPassword" placeholder="Новий пароль">
-            <div class="modal-buttons">
-                <button class="btn" id="savePasswordBtn">Зберегти</button>
-                <button class="btn" id="closeModalBtn">Скасувати</button>
-            </div>
-        </div>
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Мої підписки</h3>
+            <ul class="subscriptions">
+                <li>Користувач 1</li>
+                <li>Користувач 2</li>
+                <li>Користувач 3</li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <section id="homeSection">
+                <h2 id="welcomeText"></h2>
+            </section>
+            <section id="accountSection" class="hidden">
+                <h2>Акаунт</h2>
+                <p>Ім'я: <span id="accountUsername"></span></p>
+                <button class="btn" id="changePasswordBtn">Змінити пароль</button>
+            </section>
+            <section id="updatesSection" class="hidden">
+                <h2>Оновлення</h2>
+                <ul>
+                    <li>Додано кнопку оновлення</li>
+                    <li>Виправлено синхронізацію імені</li>
+                </ul>
+            </section>
+        </main>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let username = localStorage.getItem("username");
-
             if (!username) {
                 window.location.href = "login.html";
                 return;
             }
-
             document.getElementById("welcomeText").textContent = "Привіт, " + username + "!";
             document.getElementById("accountUsername").textContent = username;
 
             document.getElementById("homeTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
+                document.getElementById("updatesSection").classList.add("hidden");
             });
 
             document.getElementById("accountTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
+                document.getElementById("updatesSection").classList.add("hidden");
+            });
+
+            document.getElementById("updatesTab").addEventListener("click", function () {
+                document.getElementById("homeSection").classList.add("hidden");
+                document.getElementById("accountSection").classList.add("hidden");
+                document.getElementById("updatesSection").classList.remove("hidden");
             });
 
             document.getElementById("logoutBtn").addEventListener("click", function () {
                 localStorage.removeItem("username");
                 window.location.href = "login.html";
-            });
-
-            document.getElementById("changePasswordBtn").addEventListener("click", function () {
-                document.getElementById("passwordModal").classList.remove("hidden");
-            });
-
-            document.getElementById("savePasswordBtn").addEventListener("click", function () {
-                let newPassword = document.getElementById("newPassword").value;
-                if (newPassword.trim() !== "") {
-                    alert("Пароль змінено успішно!");
-                    document.getElementById("passwordModal").classList.add("hidden");
-                } else {
-                    alert("Введіть новий пароль!");
-                }
-            });
-
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                document.getElementById("passwordModal").classList.add("hidden");
             });
         });
     </script>
