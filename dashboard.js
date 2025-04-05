@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const savePasswordBtn = document.getElementById("savePasswordBtn");
     const usernameDisplay = document.getElementById("usernameDisplay");
     const accountUsername = document.getElementById("accountUsername");
+    const settingsSection = document.getElementById("settingsSection")
 
     let username = localStorage.getItem("username") || "Користувач";
 

@@ -1,8 +1,30 @@
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>Galaxy - Панель</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar {
+            width: 200px;
+        }
+        .main-content {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,18 +34,21 @@
                 <li><a href="#" id="homeTab">Головна</a></li>
                 <li><a href="#" id="accountTab">Акаунт</a></li>
                 <li><a href="#" id="updatesTab">Оновлення</a></li>
+                <li><a href="#" id="settingsTab">Налаштування</a></li>
             </ul>
         </nav>
         <button class="logout" id="logoutBtn">Вийти</button>
     </header>
     <div class="container">
         <aside class="sidebar">
-            <h3>Мої підписки</h3>
-            <ul class="subscriptions">
-                <li>Користувач 1</li>
-                <li>Користувач 2</li>
-                <li>Користувач 3</li>
-            </ul>
+            <div class="subscriptions">
+                <h3>Мої підписки</h3>
+                <ul>
+                    <li>Користувач 1</li>
+                    <li>Користувач 2</li>
+                    <li>Користувач 3</li>
+                </ul>
+            </div>
         </aside>
         <main class="main-content">
             <section id="homeSection">
@@ -33,6 +58,13 @@
                 <h2>Акаунт</h2>
                 <p>Ім'я: <span id="accountUsername"></span></p>
                 <button class="btn" id="changePasswordBtn">Змінити пароль</button>
+            </section>
+            <section id="settingsSection" class="hidden">
+                <h2>Налаштування</h2>
+                <ul>
+                    <li>Тут покищо нічого нема</li>
+                </ul>
+                <button class="btn" id="settbutton">Тест</button>
             </section>
             <section id="updatesSection" class="hidden">
                 <h2>Оновлення</h2>
@@ -58,18 +90,27 @@
                 document.getElementById("homeSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
                 document.getElementById("updatesSection").classList.add("hidden");
+                document.getElementById("settingsSection").classList.add("hidden");
             });
 
             document.getElementById("accountTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 document.getElementById("updatesSection").classList.add("hidden");
+                document.getElementById("settingsSection").classList.add("hidden");
             });
 
             document.getElementById("updatesTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
                 document.getElementById("updatesSection").classList.remove("hidden");
+                document.getElementById("settingsSection").classList.add("hidden");
+            });
+            document.getElementById("settingsTab").addEventListener("click", function () {
+                document.getElementById("homeSection").classList.add("hidden");
+                document.getElementById("accountSection").classList.add("hidden");
+                document.getElementById("updatesSection").classList.add("hidden");
+                document.getElementById("settingsSection").classList.remove("hidden");
             });
 
             document.getElementById("logoutBtn").addEventListener("click", function () {
