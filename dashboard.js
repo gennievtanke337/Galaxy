@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const savePasswordBtn = document.getElementById("savePasswordBtn");
     const usernameDisplay = document.getElementById("usernameDisplay");
     const accountUsername = document.getElementById("accountUsername");
-    const settingsSection = document.getElementById("settingsSection")
+    const settingsSection = document.getElementById("settingsSection");
+    const settbutton = document.getElementById("settbutton");
 
     let username = localStorage.getItem("username") || "Користувач";
 
@@ -37,6 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
     changePasswordBtn.addEventListener("click", function () {
         passwordModal.classList.remove("hidden");
     });
+
+    settbutton.addEventListener("click", function () {
+        settbutton.classList.remove("hidden");
+    });
+
 
     savePasswordBtn.addEventListener("click", function () {
         const newPassword = document.getElementById("newPassword").value;

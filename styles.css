@@ -65,12 +65,6 @@ input {
     cursor: pointer;
 }
 
-.sidebar {
-    width: 200px;
-    background: #11153e;
-    padding: 15px;
-    border-radius: 10px;
-}
 
 .main-content {
     flex-grow: 1;
@@ -178,49 +172,6 @@ nav a, .logout {
 
 .social-btn.twitter {
     background: #1DA1F2;
-}
-
-.subscriptions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
-    background: #11153e;
-    border-radius: 10px;
-    width: 180px;
-}
-
-.subscriptions h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-.subscriptions ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-.subscriptions li {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    background: #1a1d4d;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    color: white;
-    font-size: 14px;
-    width: 100%;
-    justify-content: center;
-}
-
-.subscriptions li::before {
-    content: '●';
-    color: #007bff;
-    margin-right: 10px;
-    font-size: 12px;
 }
 
 nav a {
