@@ -18,7 +18,6 @@
             padding: 20px;
             box-sizing: border-box;
         }
-
         .main-content {
             flex: 1;
         }
@@ -38,10 +37,14 @@
         <button class="logout" id="logoutBtn">Вийти</button>
     </header>
     <div class="container">
-
         <main class="main-content">
             <section id="homeSection">
                 <h2 id="welcomeText"></h2>
+                <div>
+                    <textarea id="postInput" placeholder="Напишіть пост..." rows="3" style="width: 100%; padding: 10px; border-radius: 5px; box-sizing: border-box;"></textarea>
+                    <button class="btn" id="addPostBtn">Опублікувати</button>
+                </div>
+                <ul id="postList" style="list-style: none; padding: 0; margin-top: 20px;"></ul>
             </section>
             <section id="accountSection" class="hidden">
                 <h2>Акаунт</h2>
@@ -74,39 +77,73 @@
             }
             document.getElementById("welcomeText").textContent = "Привіт, " + username + "!";
             document.getElementById("accountUsername").textContent = username;
-
+    
             document.getElementById("homeTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.remove("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
                 document.getElementById("updatesSection").classList.add("hidden");
                 document.getElementById("settingsSection").classList.add("hidden");
             });
-
+    
             document.getElementById("accountTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.remove("hidden");
                 document.getElementById("updatesSection").classList.add("hidden");
                 document.getElementById("settingsSection").classList.add("hidden");
             });
-
+    
             document.getElementById("updatesTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
                 document.getElementById("updatesSection").classList.remove("hidden");
                 document.getElementById("settingsSection").classList.add("hidden");
             });
+    
             document.getElementById("settingsTab").addEventListener("click", function () {
                 document.getElementById("homeSection").classList.add("hidden");
                 document.getElementById("accountSection").classList.add("hidden");
                 document.getElementById("updatesSection").classList.add("hidden");
                 document.getElementById("settingsSection").classList.remove("hidden");
             });
-
+    
             document.getElementById("logoutBtn").addEventListener("click", function () {
                 localStorage.removeItem("username");
                 window.location.href = "login.html";
             });
+    
+            const postInput = document.getElementById("postInput");
+            const postList = document.getElementById("postList");
+            const addPostBtn = document.getElementById("addPostBtn");
+    
+            function renderPosts() {
+                const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+                postList.innerHTML = "";
+                posts.forEach(post => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>${post.author}</strong>: ${post.text}`;
+                    li.style.background = "#16213e";
+                    li.style.padding = "10px";
+                    li.style.marginTop = "10px";
+                     li.style.borderRadius = "5px";
+                    li.style.fontSize = "20px";
+                    postList.appendChild(li);
+                });
+            }
+    
+            addPostBtn.addEventListener("click", () => {
+                const text = postInput.value.trim();
+                if (text !== "") {
+                    const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+                    posts.push({ author: username, text: text });
+                    sessionStorage.setItem("posts", JSON.stringify(posts));
+                    renderPosts();
+                    postInput.value = "";
+                }
+            });
+    
+            renderPosts();
         });
     </script>
+    
 </body>
 </html>
