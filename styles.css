@@ -223,3 +223,26 @@ input {
     border-radius: 5px;
     box-sizing: border-box;
 }
+
+
+#lightThemeBtn, #darkThemeBtn {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#lightThemeBtn:hover, #darkThemeBtn:hover {
+    background-color: #666;
+}
+
+
+.logo {
+    width: 150px;
+    height: auto;
+}
