@@ -21,135 +21,233 @@
         .main-content {
             flex: 1;
         }
+        #welcomeContainer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+        .hidden {
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .avatar-selection {
+            margin-top: 15px;
+        }
+        .avatar-selection img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .avatar-selection img.selected {
+            border-color: #4CAF50;
+        }
+        .light-theme {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        .light-theme header {
+            background: #ddd;
+        }
+        .light-theme .modal-content {
+            background: #fff;
+        }
+        .light-theme nav a, .light-theme .logout {
+            color: black;
+            background: none;
+        }
+        .light-theme .logout {
+            background: #555;
+        }
+        .light-theme nav a:hover {
+            background: #ccc;
+        }
+        .light-theme #postList li {
+            background: #ddd !important;
+            color: #000;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="Galaxy Logo" class="logo">
-        <nav>
+<header>
+    <img src="logo.png" alt="Galaxy Logo" class="logo">
+    <nav>
+        <ul>
+            <li><a href="#" id="homeTab">Головна</a></li>
+            <li><a href="#" id="accountTab">Акаунт</a></li>
+            <li><a href="#" id="updatesTab">Оновлення</a></li>
+            <li><a href="#" id="settingsTab">Налаштування</a></li>
+        </ul>
+    </nav>
+    <button class="logout" id="logoutBtn">Вийти</button>
+</header>
+
+<div class="container">
+    <main class="main-content">
+        <section id="homeSection">
+            <h2 id="welcomeContainer">
+                <img id="userAvatar" src="avatar.png" alt="Аватар" class="user-avatar">
+                <span id="welcomeText"></span>
+            </h2>
+            <div>
+                <textarea id="postInput" placeholder="Напишіть пост..." rows="3" style="width: 100%; padding: 10px; border-radius: 5px; box-sizing: border-box;"></textarea>
+                <button class="btn" id="addPostBtn">Опублікувати</button>
+            </div>
+            <ul id="postList" style="list-style: none; padding: 0; margin-top: 20px;"></ul>
+        </section>
+        <section id="accountSection" class="hidden">
+            <h2>Акаунт</h2>
+            <p>Ім'я: <span id="accountUsername"></span></p>
+            <button class="btn" id="changePasswordBtn">Змінити пароль</button>
+            <div class="avatar-selection">
+                <p>Виберіть аватар:</p>
+                <img src="avatar1.jpg" data-src="avatar1.jpg">
+                <img src="avatar2.jpg" data-src="avatar2.png">
+                <img src="avatar3.jpg" data-src="avatar3.png">
+            </div>
+        </section>
+        <section id="settingsSection" class="hidden">
+            <h2>Налаштування</h2>
             <ul>
-                <li><a href="#" id="homeTab">Головна</a></li>
-                <li><a href="#" id="accountTab">Акаунт</a></li>
-                <li><a href="#" id="updatesTab">Оновлення</a></li>
-                <li><a href="#" id="settingsTab">Налаштування</a></li>
+                <li>Кнопки поки що не працюють</li>
             </ul>
-        </nav>
-        <button class="logout" id="logoutBtn">Вийти</button>
-    </header>
-    
-    <div class="container">
-        <main class="main-content">
-            <section id="homeSection">
-                <h2 id="welcomeText"></h2>
-                <div>
-                    <textarea id="postInput" placeholder="Напишіть пост..." rows="3" style="width: 100%; padding: 10px; border-radius: 5px; box-sizing: border-box;"></textarea>
-                    <button class="btn" id="addPostBtn">Опублікувати</button>
-                </div>
-                <ul id="postList" style="list-style: none; padding: 0; margin-top: 20px;"></ul>
-            </section>
-            <section id="accountSection" class="hidden">
-                <h2>Акаунт</h2>
-                <p>Ім'я: <span id="accountUsername"></span></p>
-                <button class="btn" id="changePasswordBtn">Змінити пароль</button>
-            </section>
-            <section id="settingsSection" class="hidden">
-                <h2>Налаштування</h2>
-                <ul>
-                    <li>Кнопки поки що не працюють</li>
-                </ul>
+            <button class="btn" id="lightThemeBtn">Світла тема</button>
+            <button class="btn" id="darkThemeBtn">Темна тема</button>
+        </section>
+        <section id="updatesSection" class="hidden">
+            <h2>Оновлення</h2>
+            <ul>
+                <li>Додано кнопку оновлення</li>
+                <li>Виправлено синхронізацію імені</li>
+            </ul>
+        </section>
+    </main>
+</div>
 
-                <button class="btn" id="lightThemeBtn">Світла тема</button>
-                <button class="btn" id="darkThemeBtn">Темна тема</button>
-            </section>
-            
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let username = localStorage.getItem("username");
+        let avatar = localStorage.getItem("avatar") || "avatar.png";
+        if (!username) {
+            window.location.href = "login.html";
+            return;
+        }
+        const welcomeText = document.getElementById("welcomeText");
+        const userAvatar = document.getElementById("userAvatar");
+        welcomeText.textContent = "Привіт, " + username + "!";
+        userAvatar.src = avatar;
+        document.getElementById("accountUsername").textContent = username;
 
-            </section>
-            <section id="updatesSection" class="hidden">
-                <h2>Оновлення</h2>
-                <ul>
-                    <li>Додано кнопку оновлення</li>
-                    <li>Виправлено синхронізацію імені</li>
-                </ul>
-            </section>
-        </main>
-    </div>
+        document.getElementById("homeTab").addEventListener("click", function () {
+            document.getElementById("homeSection").classList.remove("hidden");
+            document.getElementById("accountSection").classList.add("hidden");
+            document.getElementById("updatesSection").classList.add("hidden");
+            document.getElementById("settingsSection").classList.add("hidden");
+        });
+        document.getElementById("accountTab").addEventListener("click", function () {
+            document.getElementById("homeSection").classList.add("hidden");
+            document.getElementById("accountSection").classList.remove("hidden");
+            document.getElementById("updatesSection").classList.add("hidden");
+            document.getElementById("settingsSection").classList.add("hidden");
+            document.querySelectorAll(".avatar-selection img").forEach(img => {
+                img.classList.toggle("selected", img.dataset.src === avatar);
+            });
+        });
+        document.getElementById("updatesTab").addEventListener("click", function () {
+            document.getElementById("homeSection").classList.add("hidden");
+            document.getElementById("accountSection").classList.add("hidden");
+            document.getElementById("updatesSection").classList.remove("hidden");
+            document.getElementById("settingsSection").classList.add("hidden");
+        });
+        document.getElementById("settingsTab").addEventListener("click", function () {
+            document.getElementById("homeSection").classList.add("hidden");
+            document.getElementById("accountSection").classList.add("hidden");
+            document.getElementById("updatesSection").classList.add("hidden");
+            document.getElementById("settingsSection").classList.remove("hidden");
+        });
+        document.getElementById("logoutBtn").addEventListener("click", function () {
+            localStorage.removeItem("username");
+            localStorage.removeItem("avatar");
+            window.location.href = "login.html";
+        });
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let username = localStorage.getItem("username");
-            if (!username) {
-                window.location.href = "login.html";
-                return;
-            }
-            document.getElementById("welcomeText").textContent = "Привіт, " + username + "!";
-            document.getElementById("accountUsername").textContent = username;
-    
-            document.getElementById("homeTab").addEventListener("click", function () {
-                document.getElementById("homeSection").classList.remove("hidden");
-                document.getElementById("accountSection").classList.add("hidden");
-                document.getElementById("updatesSection").classList.add("hidden");
-                document.getElementById("settingsSection").classList.add("hidden");
-            });
-    
-            document.getElementById("accountTab").addEventListener("click", function () {
-                document.getElementById("homeSection").classList.add("hidden");
-                document.getElementById("accountSection").classList.remove("hidden");
-                document.getElementById("updatesSection").classList.add("hidden");
-                document.getElementById("settingsSection").classList.add("hidden");
-            });
-    
-            document.getElementById("updatesTab").addEventListener("click", function () {
-                document.getElementById("homeSection").classList.add("hidden");
-                document.getElementById("accountSection").classList.add("hidden");
-                document.getElementById("updatesSection").classList.remove("hidden");
-                document.getElementById("settingsSection").classList.add("hidden");
-            });
-    
-            document.getElementById("settingsTab").addEventListener("click", function () {
-                document.getElementById("homeSection").classList.add("hidden");
-                document.getElementById("accountSection").classList.add("hidden");
-                document.getElementById("updatesSection").classList.add("hidden");
-                document.getElementById("settingsSection").classList.remove("hidden");
-            });
-    
-            document.getElementById("logoutBtn").addEventListener("click", function () {
-                localStorage.removeItem("username");
-                window.location.href = "login.html";
-            });
-    
-            const postInput = document.getElementById("postInput");
-            const postList = document.getElementById("postList");
-            const addPostBtn = document.getElementById("addPostBtn");
-    
-            function renderPosts() {
-                const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-                postList.innerHTML = "";
-                posts.forEach(post => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `<strong>${post.author}</strong>: ${post.text}`;
-                    li.style.background = "#16213e";
-                    li.style.padding = "10px";
-                    li.style.marginTop = "10px";
-                     li.style.borderRadius = "5px";
-                    li.style.fontSize = "20px";
-                    postList.appendChild(li);
-                });
-            }
-    
-            addPostBtn.addEventListener("click", () => {
-                const text = postInput.value.trim();
-                if (text !== "") {
-                    const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-                    posts.push({ author: username, text: text });
-                    sessionStorage.setItem("posts", JSON.stringify(posts));
-                    renderPosts();
-                    postInput.value = "";
+        const postInput = document.getElementById("postInput");
+        const postList = document.getElementById("postList");
+        const addPostBtn = document.getElementById("addPostBtn");
+
+        function renderPosts() {
+            const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+            postList.innerHTML = "";
+            posts.forEach(post => {
+                const li = document.createElement("li");
+                li.innerHTML = `<strong>${post.author}</strong>: ${post.text}`;
+                li.style.background = "#16213e";
+                li.style.padding = "10px";
+                li.style.marginTop = "10px";
+                li.style.borderRadius = "5px";
+                li.style.fontSize = "20px";
+                if (document.body.classList.contains("light-theme")) {
+                    li.style.background = "#ddd";
+                    li.style.color = "#000";
                 }
+                postList.appendChild(li);
             });
-    
+        }
+
+        addPostBtn.addEventListener("click", () => {
+            const text = postInput.value.trim();
+            if (text !== "") {
+                const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+                posts.push({ author: username, text: text });
+                sessionStorage.setItem("posts", JSON.stringify(posts));
+                renderPosts();
+                postInput.value = "";
+            }
+        });
+
+        document.getElementById("changePasswordBtn").addEventListener("click", function () {
+            const newPassword = prompt("Введіть новий пароль:");
+            if (newPassword) {
+                localStorage.setItem("password", newPassword);
+                alert("Пароль змінено!");
+            }
+        });
+
+        document.querySelectorAll(".avatar-selection img").forEach(img => {
+            img.addEventListener("click", function () {
+                document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
+                this.classList.add("selected");
+                localStorage.setItem("avatar", this.dataset.src);
+                userAvatar.src = this.dataset.src;
+            });
+        });
+
+        document.getElementById("lightThemeBtn").addEventListener("click", function () {
+            document.body.classList.add("light-theme");
             renderPosts();
         });
-    </script>
-    
+
+        document.getElementById("darkThemeBtn").addEventListener("click", function () {
+            document.body.classList.remove("light-theme");
+            renderPosts();
+        });
+
+        renderPosts();
+    });
+</script>
 </body>
 </html>

@@ -246,3 +246,31 @@ input {
     width: 150px;
     height: auto;
 }
+
+button.btn {
+    transition: transform 0.2s ease;
+}
+button.btn:hover {
+    transform: scale(1.05);
+}
+
+button.social-btn.google {
+    transition: transform 0.2s ease;
+}
+button.social-btn.google:hover {
+    transform: scale(1.05);
+}
+
+button.social-btn.twitter {
+    transition: transform 0.2s ease;
+}
+button.social-btn.twitter:hover {
+    transform: scale(1.05);
+}
+
+button.btnuv {
+    transition: transform 0.2s ease;
+}
+button.btnuv:hover {
+    transform: scale(1.05);
+}
