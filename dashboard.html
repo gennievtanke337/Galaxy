@@ -81,13 +81,12 @@
             color: #000;
         }
         button, nav a, .avatar-selection img {
-        transition: all 0.3s ease;
+            transition: all 0.3s ease;
         }
         button:hover, nav a:hover, .avatar-selection img:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-
     </style>
 </head>
 <body>
@@ -128,9 +127,7 @@
                 <img src="avatar3.jpg" data-src="avatar3.jpg">
                 <p>Або завантажте свій аватар:</p>
                 <input type="file" id="customAvatarInput" accept="image/*">
-
             </div>
-            
         </section>
         <section id="settingsSection" class="hidden">
             <h2>Налаштування</h2>
@@ -143,12 +140,13 @@
         <section id="updatesSection" class="hidden">
             <h2>Оновлення</h2>
             <ul>
-                <li>Версія 1.2</li>
+                <li>Версія 1.3</li>
                 <li>1.0Добавлені Анімації майже на все</li>
                 <li>1.0Вибір аватарок</li>
                 <li>1.0Логотип сайту</li>
                 <li>1.1Зроблені пости</li>
                 <li>1.2 Пофіксив світлу тему</li>
+                <li>1.3 Тепер можна видаляти пости</li>
             </ul>
         </section>
     </main>
@@ -168,144 +166,146 @@ document.addEventListener("DOMContentLoaded", function () {
     userAvatar.src = avatar;
     document.getElementById("accountUsername").textContent = username;
 
-    document.getElementById("homeTab").addEventListener("click", function () {
-        document.getElementById("homeSection").classList.remove("hidden");
-        document.getElementById("accountSection").classList.add("hidden");
-        document.getElementById("updatesSection").classList.add("hidden");
-        document.getElementById("settingsSection").classList.add("hidden");
-    });
-
-    document.getElementById("accountTab").addEventListener("click", function () {
-        document.getElementById("homeSection").classList.add("hidden");
-        document.getElementById("accountSection").classList.remove("hidden");
-        document.getElementById("updatesSection").classList.add("hidden");
-        document.getElementById("settingsSection").classList.add("hidden");
-
-        const currentAvatar = localStorage.getItem("avatar") || "avatar.png";
-        document.querySelectorAll(".avatar-selection img").forEach(img => {
-            img.classList.toggle("selected", img.dataset.src === currentAvatar);
-        });
-    });
-
-    document.getElementById("updatesTab").addEventListener("click", function () {
-        document.getElementById("homeSection").classList.add("hidden");
-        document.getElementById("accountSection").classList.add("hidden");
-        document.getElementById("updatesSection").classList.remove("hidden");
-        document.getElementById("settingsSection").classList.add("hidden");
-    });
-
-    document.getElementById("settingsTab").addEventListener("click", function () {
-        document.getElementById("homeSection").classList.add("hidden");
-        document.getElementById("accountSection").classList.add("hidden");
-        document.getElementById("updatesSection").classList.add("hidden");
-        document.getElementById("settingsSection").classList.remove("hidden");
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", function () {
-        localStorage.removeItem("username");
-        localStorage.removeItem("avatar");
-        window.location.href = "login.html";
-    });
-
-    const postInput = document.getElementById("postInput");
-    const postList = document.getElementById("postList");
-    const addPostBtn = document.getElementById("addPostBtn");
-
     function renderPosts() {
         const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+        const postList = document.getElementById("postList");
         postList.innerHTML = "";
-        posts.forEach(post => {
+        for (let i = posts.length - 1; i >= 0; i--) {
+            const post = posts[i];
             const li = document.createElement("li");
             li.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${localStorage.getItem('avatar') || 'avatar.png'}" alt="Аватар" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                    <img src="${post.avatar}" alt="Аватар" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
                     <strong>${post.author}</strong>: ${post.text}
+                    ${post.author === username ? `<button style="margin-left:auto;" onclick="deletePost(${i})">Видалити</button>` : ''}
                 </div>`;
-            li.style.background = "#16213e";
+            li.style.background = document.body.classList.contains("light-theme") ? "#ddd" : "#16213e";
+            li.style.color = document.body.classList.contains("light-theme") ? "#000" : "#fff";
             li.style.padding = "10px";
             li.style.marginTop = "10px";
             li.style.borderRadius = "5px";
             li.style.fontSize = "20px";
-            if (document.body.classList.contains("light-theme")) {
-                li.style.background = "#ddd";
-                li.style.color = "#000";
-            }
             postList.appendChild(li);
-        });
+        }
     }
 
-    addPostBtn.addEventListener("click", () => {
-        const text = postInput.value.trim();
-        if (text !== "") {
-            const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-            posts.push({ author: username, text: text });
+    window.deletePost = function(index) {
+        const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+        if (posts[index].author === username) {
+            posts.splice(index, 1);
             sessionStorage.setItem("posts", JSON.stringify(posts));
             renderPosts();
-            postInput.value = "";
+        } else {
+            alert("Ви можете видаляти лише свої пости!");
         }
-    });
+    };
 
-    document.getElementById("changePasswordBtn").addEventListener("click", function () {
+    renderPosts();
+
+    document.getElementById("addPostBtn").onclick = () => {
+        const text = document.getElementById("postInput").value.trim();
+        if (text) {
+            const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+            posts.push({ author: username, text, avatar: localStorage.getItem("avatar") || "avatar.png" });
+            sessionStorage.setItem("posts", JSON.stringify(posts));
+            renderPosts();
+            document.getElementById("postInput").value = "";
+        }
+    };
+
+    document.getElementById("homeTab").onclick = () => {
+        ["homeSection","accountSection","updatesSection","settingsSection"].forEach(id => {
+            document.getElementById(id).classList.toggle("hidden", id !== "homeSection");
+        });
+    };
+    document.getElementById("accountTab").onclick = () => {
+        ["homeSection","accountSection","updatesSection","settingsSection"].forEach(id => {
+            document.getElementById(id).classList.toggle("hidden", id !== "accountSection");
+        });
+        document.querySelectorAll(".avatar-selection img").forEach(img => {
+            img.classList.toggle("selected", img.dataset.src === localStorage.getItem("avatar"));
+        });
+    };
+    document.getElementById("updatesTab").onclick = () => {
+        ["homeSection","accountSection","updatesSection","settingsSection"].forEach(id => {
+            document.getElementById(id).classList.toggle("hidden", id !== "updatesSection");
+        });
+    };
+    document.getElementById("settingsTab").onclick = () => {
+        ["homeSection","accountSection","updatesSection","settingsSection"].forEach(id => {
+            document.getElementById(id).classList.toggle("hidden", id !== "settingsSection");
+        });
+    };
+
+    document.getElementById("logoutBtn").onclick = () => {
+        localStorage.removeItem("username");
+        localStorage.removeItem("avatar");
+        window.location.href = "login.html";
+    };
+
+    document.getElementById("changePasswordBtn").onclick = () => {
         const newPassword = prompt("Введіть новий пароль:");
         if (newPassword) {
             localStorage.setItem("password", newPassword);
             alert("Пароль змінено!");
         }
-    });
+    };
 
     document.querySelectorAll(".avatar-selection img").forEach(img => {
-        img.addEventListener("click", function () {
-            const currentAvatar = localStorage.getItem("avatar") || "avatar.png";
-            if (this.dataset.src === currentAvatar) {
+        img.onclick = function() {
+            if (this.dataset.src === localStorage.getItem("avatar")) {
                 localStorage.removeItem("avatar");
                 userAvatar.src = "avatar.png";
                 document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
             } else {
-                document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
-                this.classList.add("selected");
                 localStorage.setItem("avatar", this.dataset.src);
                 userAvatar.src = this.dataset.src;
+                document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
+                this.classList.add("selected");
             }
             renderPosts();
-        });
-    });
-
-    document.getElementById("lightThemeBtn").addEventListener("click", function () {
-        document.body.classList.add("light-theme");
-        renderPosts();
-    });
-
-    document.getElementById("darkThemeBtn").addEventListener("click", function () {
-        document.body.classList.remove("light-theme");
-        renderPosts();
-    });
-    if (!localStorage.getItem("avatar")) {
-    setTimeout(() => {
-        alert("Ласкаво просимо! Виберіть аватар для свого профілю на сторінці 'Акаунт' або завантажте власний.");
-        document.getElementById("accountTab").click();
-    }, 500);
-}
-
-document.getElementById("customAvatarInput").addEventListener("change", function(event) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const imageData = e.target.result;
-            localStorage.setItem("avatar", imageData);
-            document.getElementById("userAvatar").src = imageData;
-            document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
-            renderPosts();
         };
-        reader.readAsDataURL(file);
-    } else {
-        alert("Будь ласка, виберіть зображення.");
+    });
+
+    document.getElementById("lightThemeBtn").onclick = () => {
+        if (!document.body.classList.contains("light-theme")) {
+            document.body.classList.add("light-theme");
+            renderPosts();
+        }
+    };
+
+    document.getElementById("darkThemeBtn").onclick = () => {
+        if (document.body.classList.contains("light-theme")) {
+            document.body.classList.remove("light-theme");
+            renderPosts();
+        }
+    };
+
+    if (!localStorage.getItem("avatar")) {
+        setTimeout(() => {
+            alert("Ласкаво просимо! Виберіть аватар для свого профілю на сторінці 'Акаунт' або завантажте власний.");
+            document.getElementById("accountTab").click();
+        }, 500);
     }
-});
 
-    renderPosts();
+    document.getElementById("customAvatarInput").addEventListener("change", event => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const imageData = e.target.result;
+                localStorage.setItem("avatar", imageData);
+                userAvatar.src = imageData;
+                document.querySelectorAll(".avatar-selection img").forEach(i => i.classList.remove("selected"));
+                renderPosts();
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Будь ласка, виберіть зображення.");
+        }
+    });
 });
-
 </script>
+
 </body>
 </html>
